@@ -1,0 +1,6 @@
+{
+  "name": "lightbot",
+  "dependencies": {
+    "ranger": ">= 0.2.4"
+  }
+}
