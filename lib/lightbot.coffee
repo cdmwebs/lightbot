@@ -36,7 +36,9 @@ lightbot.on /standup:/,(room, message) -> room.speak "i hear ya, man"
 
 lightbot.on /imageme/i, (room, searchString) ->
   room.speak "I'm on it... #{searchString}"
-  googleImage searchString, (image) -> room.speak image
+  googleImage searchString, (image) ->
+    room.speak image
+    room.speak "How do you like those apples?" if searchString.match(/apple/)
 
 googleImage = (searchString, callback) ->
   query = qs.escape(searchString)
