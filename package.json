@@ -2,6 +2,7 @@
   "name": "lightbot",
   "version": "0.1.0",
   "dependencies": {
+    "coffee-script": "1.1.2",
     "ranger": "0.2.4",
     "underscore": "1.1.7"
   }
