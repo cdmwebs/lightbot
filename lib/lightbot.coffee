@@ -2,7 +2,7 @@ _        = require('underscore')
 url      = require('url')
 http     = require('https')
 qs       = require('querystring')
-campfire = require('ranger').createClient(process.env.CAMPFIRE_ROOM
+campfire = require('ranger').createClient(process.env.CAMPFIRE_SUBDOMAIN
                                           process.env.CAMPFIRE_TOKEN)
 
 class Bot
@@ -17,7 +17,7 @@ class Bot
 
 lightbot = new Bot
 
-room = campfire.room 420976, (room) ->
+room = campfire.room process.env.CAMPFIRE_ROOM, (room) ->
   room.join ->
     room.listen (message) ->
       return unless message.type == "TextMessage"
