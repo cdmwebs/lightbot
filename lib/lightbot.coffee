@@ -1,8 +1,9 @@
+http     = require("http")
 _        = require('underscore')
 url      = require('url')
-http     = require('https')
+https    = require('https')
 qs       = require('querystring')
-campfire = require('ranger').createClient(process.env.CAMPFIRE_SUBDOMAIN
+campfire = require('ranger').createClient(process.env.CAMPFIRE_SUBDOMAIN,
                                           process.env.CAMPFIRE_TOKEN)
 
 class Bot
@@ -44,7 +45,7 @@ googleImage = (searchString, callback) ->
     host: 'ajax.googleapis.com'
     path: "/ajax/services/search/images?v=1.0&rsz=1&q=#{query}"
     port: 443
-  http.get options, (res) ->
+  https.get options, (res) ->
     body = ''
     res.on 'data', (chunk) ->
       body += chunk
@@ -55,3 +56,9 @@ googleImage = (searchString, callback) ->
         callback image
       catch ex
         console.log 'waiting... ' + ex
+
+http.createServer((req, res) ->
+  res.writeHead(200, {'Content-Type': 'text/plain'})
+  res.write('Hello World\n')
+  res.end()
+).listen(process.env.PORT || 3000)
