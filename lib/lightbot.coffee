@@ -12,7 +12,8 @@ class Bot
       re: re
       callback: callback
   tricks: ->
-    _.each(@messages, (msg) -> msg.re).join("\n")
+    return "no tricks" if @messages.length == 0
+    _.map(@messages, (msg) -> msg.re).join("\n")
 
 lightbot = new Bot
 
@@ -20,6 +21,7 @@ room = campfire.room 420976, (room) ->
   room.join ->
     room.listen (message) ->
       return unless message.type == "TextMessage"
+      return if message.userId == 990800
       body = message.body
       for action in lightbot.messages
         if position = body.match(action.re)
