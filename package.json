@@ -1,6 +1,8 @@
 {
   "name": "lightbot",
+  "version": "0.1.0",
   "dependencies": {
-    "ranger": ">= 0.2.4"
+    "ranger": "0.2.4",
+    "underscore": "1.1.7"
   }
 }
