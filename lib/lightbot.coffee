@@ -18,21 +18,35 @@ class Bot
 
 lightbot = new Bot
 
-room = campfire.room process.env.CAMPFIRE_ROOM, (room) ->
-  room.join ->
-    room.listen (message) ->
-      return unless message.type == "TextMessage"
-      return if message.userId == 990800
-      body = message.body
-      for action in lightbot.messages
-        if position = body.match(action.re)
-          words = body.substr(position.index).split(" ")
-          command = words.shift()
-          action.callback room, words.join(" ")
+joinRoom = (roomId) ->
+  campfire.room roomId, (room) ->
+    setInterval ->
+      if room.isListening()
+        console.log "listening in #{room.name}"
+      else
+        console.log "re-joining... #{room.name}"
+        joinRoom(room)
+    , 10000
+    room.join ->
+      room.listen (message) ->
+        return if message.type != "TextMessage" or message.userId == 990800
+        body = message.body
+        for action in lightbot.messages
+          if position = body.match(action.re)
+            words = body.substr(position.index).split(" ")
+            command = words.shift()
+            action.callback room, words.join(" "), message
+
+rooms = process.env.CAMPFIRE_ROOM.split(",")
+_.each rooms, (roomId) ->
+  console.info "joining #{roomId}"
+  joinRoom(roomId)
 
 lightbot.on /tricks/i, (room, message) -> room.speak lightbot.tricks()
 lightbot.on /soccer/i, (room, message) -> room.play 'vuvuzela'
-lightbot.on /standup:/,(room, message) -> room.speak "i hear ya, man"
+lightbot.on /standup:/,(room, messageText, message) ->
+  campfire.user message.userId, (user) ->
+    room.speak "i hear ya, #{user.name}. Someday we'll record this stuff."
 
 lightbot.on /imageme/i, (room, searchString) ->
   room.speak "I'm on it... #{searchString}"
@@ -64,3 +78,4 @@ http.createServer((req, res) ->
   res.write('Hello World\n')
   res.end()
 ).listen(process.env.PORT || 3000)
+
