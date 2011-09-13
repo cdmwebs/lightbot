@@ -59,7 +59,7 @@ googleImage = (searchString, callback) ->
   # This seems lame. https://github.com/joyent/node/issues/1390
   options =
     host: 'ajax.googleapis.com'
-    path: "/ajax/services/search/images?v=1.0&rsz=1&q=#{query}"
+    path: "/ajax/services/search/images?v=1.0&rsz=1&q=#{query}&safe=moderate"
     port: 443
   https.get options, (res) ->
     body = ''
