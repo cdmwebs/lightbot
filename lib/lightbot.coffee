@@ -33,6 +33,7 @@ joinRoom = (roomId) ->
         body = message.body
         for action in lightbot.messages
           if position = body.match(action.re)
+            console.log "performing #{action.re}"
             words = body.substr(position.index).split(" ")
             command = words.shift()
             action.callback room, words.join(" "), message
