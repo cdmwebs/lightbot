@@ -54,6 +54,12 @@ lightbot.on /imageme/i, (room, searchString) ->
     room.speak image
     room.speak "How do you like those apples?" if searchString.match(/apple/)
 
+lightbot.on /qotd/i, (room) ->
+	util = require('util')
+	exec = require('child_process').exec
+	exec 'fortune', (error, stdout, stderr) ->
+    room.speak stdout
+
 googleImage = (searchString, callback) ->
   query = qs.escape(searchString)
   # This seems lame. https://github.com/joyent/node/issues/1390
