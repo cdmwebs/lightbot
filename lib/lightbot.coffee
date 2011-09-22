@@ -27,7 +27,7 @@ joinRoom = (roomId) ->
       else
         console.log "re-joining... #{room.name}"
         joinRoom(room)
-    , 100000
+    , 1000000
     room.join ->
       room.listen (message) ->
         return if message.type != "TextMessage" or message.userId == 990800
