@@ -23,10 +23,11 @@ joinRoom = (roomId) ->
     setInterval ->
       if room.isListening()
         console.log "listening in #{room.name}"
+        room.speak "hey, y'all"
       else
         console.log "re-joining... #{room.name}"
         joinRoom(room)
-    , 10000
+    , 100000
     room.join ->
       room.listen (message) ->
         return if message.type != "TextMessage" or message.userId == 990800
