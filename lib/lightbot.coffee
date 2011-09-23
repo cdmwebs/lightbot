@@ -59,7 +59,11 @@ lightbot.on /qotd/i, (room) ->
 	util = require('util')
 	exec = require('child_process').exec
 	exec 'fortune', (error, stdout, stderr) ->
+    room.speak error if error?
     room.speak stdout
+
+lightbot.on /office address/i, (room) ->
+  room.speak "11126 KENWOOD RD STE C\nBLUE ASH OH 45242-1897"
 
 googleImage = (searchString, callback) ->
   query = qs.escape(searchString)
