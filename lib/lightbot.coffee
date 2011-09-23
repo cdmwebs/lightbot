@@ -43,6 +43,10 @@ _.each rooms, (roomId) ->
   console.info "joining #{roomId}"
   joinRoom(roomId)
 
+messageUser = (message) ->
+  campfire.user message.userId, (user) ->
+    user.name
+
 lightbot.on /tricks/i, (room, message) -> room.speak lightbot.tricks()
 lightbot.on /soccer/i, (room, message) -> room.play 'vuvuzela'
 lightbot.on /standup:/,(room, messageText, message) ->
@@ -62,8 +66,9 @@ lightbot.on /qotd/i, (room) ->
     room.speak error if error?
     room.speak stdout
 
-lightbot.on /office address/i, (room) ->
-  room.speak "11126 KENWOOD RD STE C\nBLUE ASH OH 45242-1897"
+lightbot.on /office address/i, (room, message) ->
+  room.speak "Hey #{messageUser(message)}, it's:"
+  room.paste "11126 KENWOOD RD STE C\nBLUE ASH OH 45242-1897"
 
 googleImage = (searchString, callback) ->
   query = qs.escape(searchString)
