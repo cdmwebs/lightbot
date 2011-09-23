@@ -29,7 +29,6 @@ joinRoom = (roomId) ->
     , 1000000
     room.join ->
       room.listen (message) ->
-        console.log message
         return if message.type != "TextMessage" or message.userId == 990800
         body = message.body
         for action in lightbot.messages
