@@ -66,9 +66,10 @@ lightbot.on /qotd/i, (room) ->
     room.speak error if error?
     room.speak stdout
 
-lightbot.on /office address/i, (room, message) ->
-  room.speak "Hey #{messageUser(message)}, it's:"
-  room.paste "11126 KENWOOD RD STE C\nBLUE ASH OH 45242-1897"
+lightbot.on /office address/i, (room, messageText, message) ->
+  campfire.user message.userId, (user) ->
+    room.speak "Hey #{user.name}, it's:"
+    room.paste "11126 KENWOOD RD STE C\nBLUE ASH OH 45242-1897"
 
 googleImage = (searchString, callback) ->
   query = qs.escape(searchString)
