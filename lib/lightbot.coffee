@@ -23,13 +23,13 @@ joinRoom = (roomId) ->
     setInterval ->
       if room.isListening()
         console.log "listening in #{room.name}"
-        room.speak "hey, y'all"
       else
         console.log "re-joining... #{room.name}"
         joinRoom(room)
     , 1000000
     room.join ->
       room.listen (message) ->
+        console.log message
         return if message.type != "TextMessage" or message.userId == 990800
         body = message.body
         for action in lightbot.messages
