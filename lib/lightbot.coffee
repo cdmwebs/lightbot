@@ -1,3 +1,7 @@
+unless process.env.CAMPFIRE_SUBDOMAIN && process.env.CAMPFIRE_TOKEN
+  console.log 'missing CAMPFIRE_TOKEN or CAMPFIRE_SUBDOMAIN'
+  process.exit(1)
+
 http     = require("http")
 _        = require('underscore')
 url      = require('url')
@@ -71,6 +75,11 @@ lightbot.on /office address/i, (room, messageText, message) ->
     room.speak "Hey #{user.name}, it's:"
     room.paste "11126 KENWOOD RD STE C\nBLUE ASH OH 45242-1897"
 
+lightbot.on /gifme/i, (room, messageText, message) ->
+  animatedGif (gif) -> 
+    room.speak gif.title
+    room.speak gif.href
+
 googleImage = (searchString, callback) ->
   query = qs.escape(searchString)
   # This seems lame. https://github.com/joyent/node/issues/1390
@@ -90,9 +99,22 @@ googleImage = (searchString, callback) ->
       catch ex
         console.log 'waiting... ' + ex
 
-http.createServer((req, res) ->
-  res.writeHead(200, {'Content-Type': 'text/plain'})
-  res.write('Hello World\n')
-  res.end()
-).listen(process.env.PORT || 3000)
+animatedGif = (callback) ->
+  nodeio = require 'node.io'
 
+  getRandomInt = (min, max) ->
+    Math.floor(Math.random() * (max - min + 1)) + min 
+
+  class RedditGif extends nodeio.JobClass
+    input: false
+    run: (num) ->
+      @getHtml 'http://www.reddit.com/r/gifs', (err, $) ->
+        gifs = $('a.title')
+        gif = gifs[getRandomInt(1, gifs.length)]
+        gif.title = gif.children[0].data
+        gif.href = gif.attribs.href
+        callback gif
+
+  @class = RedditGif
+  @job = new RedditGif
+  @gif = @job.run()

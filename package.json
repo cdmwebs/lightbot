@@ -5,6 +5,7 @@
     "coffee-script": "1.1.2",
     "browserify": "",
     "ranger": "0.2.4",
-    "underscore": "1.1.7"
+    "underscore": "1.1.7",
+    "node.io": ""
   }
 }
