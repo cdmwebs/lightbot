@@ -109,7 +109,7 @@ animatedGif = (callback) ->
     input: false
     run: (num) ->
       @getHtml 'http://www.reddit.com/r/gifs', (err, $) ->
-        gifs = $('a.title')
+        gifs = $('div.thing').not('.over18, .promoted').children('a')
         gif = gifs[getRandomInt(1, gifs.length)]
         gif.title = gif.children[0].data
         gif.href = gif.attribs.href
