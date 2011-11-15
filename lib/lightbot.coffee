@@ -85,7 +85,7 @@ googleImage = (searchString, callback) ->
   # This seems lame. https://github.com/joyent/node/issues/1390
   options =
     host: 'ajax.googleapis.com'
-    path: "/ajax/services/search/images?v=1.0&rsz=1&q=#{query}&safe=moderate"
+    path: "/ajax/services/search/images?v=1.0&rsz=8&q=#{query}&safe=moderate"
     port: 443
   https.get options, (res) ->
     body = ''
@@ -94,8 +94,10 @@ googleImage = (searchString, callback) ->
       try
         json = JSON.parse(body)
         return unless json.responseData.results.length > 0
-        image = json.responseData.results[0].unescapedUrl
-        callback image
+        images = json.responseData.results
+        image = (images.sort -> (0.5 - Math.random()))[0]
+        imageUrl = image.unescapedUrl
+        callback imageUrl
       catch ex
         console.log 'waiting... ' + ex
 
