@@ -64,9 +64,9 @@ lightbot.on /imageme/i, (room, searchString) ->
     room.speak "How do you like those apples?" if searchString.match(/apple/)
 
 lightbot.on /qotd/i, (room) ->
-	util = require('util')
-	exec = require('child_process').exec
-	exec 'fortune', (error, stdout, stderr) ->
+  util = require('util')
+  exec = require('child_process').exec
+  exec 'fortune', (error, stdout, stderr) ->
     room.speak error if error?
     room.speak stdout
 
@@ -76,7 +76,7 @@ lightbot.on /office address/i, (room, messageText, message) ->
     room.paste "11126 KENWOOD RD STE C\nBLUE ASH OH 45242-1897"
 
 lightbot.on /gifme/i, (room, messageText, message) ->
-  animatedGif (gif) -> 
+  animatedGif (gif) ->
     room.speak gif.title
     room.speak gif.href
 
@@ -109,7 +109,7 @@ animatedGif = (callback) ->
   nodeio = require 'node.io'
 
   getRandomInt = (min, max) ->
-    Math.floor(Math.random() * (max - min + 1)) + min 
+    Math.floor(Math.random() * (max - min + 1)) + min
 
   class RedditGif extends nodeio.JobClass
     input: false
