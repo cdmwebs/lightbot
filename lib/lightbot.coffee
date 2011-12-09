@@ -80,6 +80,10 @@ lightbot.on /gifme/i, (room, messageText, message) ->
     room.speak gif.title
     room.speak gif.href
 
+lightbot.on /bacon/i, (room, messageText, message) ->
+  googleImage messageText, (image) ->
+    room.speak image
+
 googleImage = (searchString, callback) ->
   query = qs.escape(searchString)
   # This seems lame. https://github.com/joyent/node/issues/1390
