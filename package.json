@@ -2,10 +2,8 @@
   "name": "lightbot",
   "version": "0.1.0",
   "dependencies": {
-    "coffee-script": "1.1.2",
-    "browserify": "",
-    "ranger": "0.2.4",
-    "underscore": "1.1.7",
-    "node.io": ""
+    "coffee-script": "",
+    "ranger": "https://github.com/cdmwebs/ranger/tarball/master",
+    "underscore": ""
   }
 }
