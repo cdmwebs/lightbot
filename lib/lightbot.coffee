@@ -10,6 +10,8 @@ qs       = require('querystring')
 campfire = require('ranger').createClient(process.env.CAMPFIRE_SUBDOMAIN,
                                           process.env.CAMPFIRE_TOKEN)
 
+# Setup the bot
+# ------------------------------------------
 class Bot
   messages: []
   on: (re, callback) ->
@@ -51,6 +53,8 @@ messageUser = (message) ->
   campfire.user message.userId, (user) ->
     user.name
 
+# end of bot setup. tricks are defined below
+# ------------------------------------------
 lightbot.on /tricks/i, (room, message) -> room.speak lightbot.tricks()
 lightbot.on /soccer/i, (room, message) -> room.play 'vuvuzela'
 lightbot.on /standup:/,(room, messageText, message) ->
@@ -74,11 +78,6 @@ lightbot.on /office address/i, (room, messageText, message) ->
   campfire.user message.userId, (user) ->
     room.speak "Hey #{user.name}, it's:"
     room.paste "11126 KENWOOD RD STE C\nBLUE ASH OH 45242-1897"
-
-lightbot.on /gifme/i, (room, messageText, message) ->
-  animatedGif (gif) ->
-    room.speak gif.title
-    room.speak gif.href
 
 lightbot.on /bacon/i, (room, messageText, message) ->
   googleImage messageText, (image) ->
@@ -104,23 +103,3 @@ googleImage = (searchString, callback) ->
         callback imageUrl
       catch ex
         console.log 'waiting... ' + ex
-
-animatedGif = (callback) ->
-  nodeio = require 'node.io'
-
-  getRandomInt = (min, max) ->
-    Math.floor(Math.random() * (max - min + 1)) + min
-
-  class RedditGif extends nodeio.JobClass
-    input: false
-    run: (num) ->
-      @getHtml 'http://www.reddit.com/r/gifs', (err, $) ->
-        gifs = $('div.thing').not('.over18, .promoted').children('a')
-        gif = gifs[getRandomInt(1, gifs.length)]
-        gif.title = gif.children[0].data
-        gif.href = gif.attribs.href
-        callback gif
-
-  @class = RedditGif
-  @job = new RedditGif
-  @gif = @job.run()
