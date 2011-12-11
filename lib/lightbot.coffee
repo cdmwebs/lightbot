@@ -55,7 +55,7 @@ messageUser = (message) ->
 
 # end of bot setup. tricks are defined below
 # ------------------------------------------
-lightbot.on /tricks/i, (room, message) -> room.speak lightbot.tricks()
+lightbot.on /tricks/i, (room, message) -> room.paste lightbot.tricks()
 lightbot.on /soccer/i, (room, message) -> room.play 'vuvuzela'
 lightbot.on /standup:/,(room, messageText, message) ->
   campfire.user message.userId, (user) ->
