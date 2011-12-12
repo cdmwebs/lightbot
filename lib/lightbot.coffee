@@ -80,7 +80,7 @@ lightbot.on /office address/i, (room, messageText, message) ->
     room.paste "11126 KENWOOD RD STE C\nBLUE ASH OH 45242-1897"
 
 lightbot.on /bacon/i, (room, messageText, message) ->
-  googleImage messageText, (image) ->
+  googleImage 'bacon', (image) ->
     room.speak image
 
 googleImage = (searchString, callback) ->
