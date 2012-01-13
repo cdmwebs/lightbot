@@ -9,7 +9,6 @@ https    = require('https')
 qs       = require('querystring')
 campfire = require('ranger').createClient(process.env.CAMPFIRE_SUBDOMAIN,
                                           process.env.CAMPFIRE_TOKEN)
-twss = require('twss')
 
 # Setup the bot
 # ------------------------------------------
@@ -44,9 +43,6 @@ joinRoom = (roomId) ->
             words = body.substr(position.index).split(" ")
             command = words.shift()
             action.callback room, words.join(" "), message
-        if twss.is(message.body)
-          campfire.user(message.userId, (user) ->
-            room.speak "That's what she said! #{user.name}.")
 
 rooms = process.env.CAMPFIRE_ROOM.split(",")
 _.each rooms, (roomId) ->
