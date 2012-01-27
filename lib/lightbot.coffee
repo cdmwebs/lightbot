@@ -9,7 +9,7 @@ https    = require('https')
 qs       = require('querystring')
 campfire = require('ranger').createClient(process.env.CAMPFIRE_SUBDOMAIN,
                                           process.env.CAMPFIRE_TOKEN)
-redditGif = require('../lib/reddit_gif')
+redditGif = require('../scripts/redditGif')
 
 # Setup the bot
 # ------------------------------------------
