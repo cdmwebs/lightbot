@@ -83,6 +83,11 @@ lightbot.on /bacon/i, (room, messageText, message) ->
   googleImage 'bacon', (image) ->
     room.speak image
 
+lightbot.on /youtubeme/i (room, searchString) ->
+  room.speak "Visualizing #{searchString} ..."
+  youtubeVideo searchString, (url) ->
+    room.speak url
+
 googleImage = (searchString, callback) ->
   query = qs.escape(searchString)
   # This seems lame. https://github.com/joyent/node/issues/1390
@@ -101,5 +106,26 @@ googleImage = (searchString, callback) ->
         image = (images.sort -> (0.5 - Math.random()))[0]
         imageUrl = image.unescapedUrl
         callback imageUrl
+      catch ex
+        console.log 'waiting... ' + ex
+
+youtubeVideo = (searchString, callback) ->
+  query = qs.escape(searchString)
+  options =
+    host: 'gdata.youtube.com'
+    path: "/feeds/api/videos?q=#{query}&orderby=published&start-index=11&max-results=10&v=2&alt=json"
+    port: 443
+  https.get options, (res) ->
+    body = ''
+    res.on 'data', (chunk) ->
+      body += chunk
+      try
+        json = JSON.parse(body)
+        return unless json.feed.entry.length > 0
+        # data['feed']['entry'][random_nuber]['link'][0]['href']
+        videos = json.feed.entry
+        video = (videos.sort -> (0.5 - Math.random()))[0]
+        videoUrl = video.link[0].href
+        callback videoUrl
       catch ex
         console.log 'waiting... ' + ex
