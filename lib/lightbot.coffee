@@ -88,6 +88,10 @@ lightbot.on /youtubeme/i, (room, searchString) ->
   youtubeVideo searchString, (url) ->
     room.speak url
 
+lightbot.on /gifme/i, (room) ->
+  redditGif (image) ->
+    room.speak image
+
 googleImage = (searchString, callback) ->
   query = qs.escape(searchString)
   # This seems lame. https://github.com/joyent/node/issues/1390
@@ -129,3 +133,23 @@ youtubeVideo = (searchString, callback) ->
         callback videoUrl
       catch ex
         console.log 'waiting... ' + ex
+
+redditGif = (callback) ->
+  options =
+    host: 'reddit.com'
+    path: '/r/gifs.json'
+    port: 80
+  http.get options, (res) ->
+    body = ''
+    res.on 'data', (chunk) ->
+      body += chunk
+      try
+        json = JSON.parse(body)
+        return unless json.feed.entry.length > 0
+        images = _.reject(json.data.children, (i) -> !i.data.over_18)
+        image = (images.sort -> (0.5 - Math.random()))[0]
+        imageUrl = image.data.url
+        callback imageUrl
+      catch ex
+        console.log 'waiting... ' + ex
+
