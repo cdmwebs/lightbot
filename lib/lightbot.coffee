@@ -9,6 +9,7 @@ https    = require('https')
 qs       = require('querystring')
 campfire = require('ranger').createClient(process.env.CAMPFIRE_SUBDOMAIN,
                                           process.env.CAMPFIRE_TOKEN)
+redditGif = require('lib/reddit_gif')
 
 # Setup the bot
 # ------------------------------------------
@@ -89,7 +90,7 @@ lightbot.on /youtubeme/i, (room, searchString) ->
     room.speak url
 
 lightbot.on /gifme/i, (room) ->
-  redditGif (image) ->
+  redditGif.go (image) ->
     room.speak image
 
 googleImage = (searchString, callback) ->
@@ -133,23 +134,3 @@ youtubeVideo = (searchString, callback) ->
         callback videoUrl
       catch ex
         console.log 'waiting... ' + ex
-
-redditGif = (callback) ->
-  options =
-    host: 'reddit.com'
-    path: '/r/gifs.json'
-    port: 80
-  http.get options, (res) ->
-    body = ''
-    res.on 'data', (chunk) ->
-      body += chunk
-      try
-        json = JSON.parse(body)
-        return unless json.feed.entry.length > 0
-        images = _.reject(json.data.children, (i) -> !i.data.over_18)
-        image = (images.sort -> (0.5 - Math.random()))[0]
-        imageUrl = image.data.url
-        callback imageUrl
-      catch ex
-        console.log 'waiting... ' + ex
-

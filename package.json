@@ -5,5 +5,8 @@
     "coffee-script": "",
     "ranger": "https://github.com/cdmwebs/ranger/tarball/master",
     "underscore": ""
+  },
+  "devDependencies": {
+    "jasmine-node": ""
   }
 }
