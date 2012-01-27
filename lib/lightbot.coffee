@@ -83,7 +83,7 @@ lightbot.on /bacon/i, (room, messageText, message) ->
   googleImage 'bacon', (image) ->
     room.speak image
 
-lightbot.on /youtubeme/i (room, searchString) ->
+lightbot.on /youtubeme/i, (room, searchString) ->
   room.speak "Visualizing #{searchString} ..."
   youtubeVideo searchString, (url) ->
     room.speak url
